@@ -1,36 +1,6 @@
 #!/usr/bin/env python
 """
 Audio file converter.
-
-This script automate conversion between different type of audio formats.
-Conversion can be performed from the following formats:
-
-    - FLAC
-    - MP3
-    - MP4
-    - WAVE
-    - WavePack
-    - Musepack
-    - Ogg Vorbis
-
-Currently supported encoders:
-
-    - Ogg Vorbis
-    - MP3 (lame)
-
-There is an option to set the quality for the encoders - for Ogg files there
-would be used an `-q' option for `oggenc` command, and for the mp3 format,
-`-V` option would be used for `lame` command. Consult corresponding man pages
-for details.
-
-Aim for this script is to produce high quality ogg files out of (preferably)
-lossless formats like FLAC/WAVE/WavePack or small-sized mp3 files out of
-anything. Of course there is no constraints on what source files would be and
-what output format will be, so there is a possibility to create ogg form low
-quality mp3 files, nevertheless it doesn't make any sense :)
-
-license: 3-clause BSD license
-version: 1.0
 """
 import argparse
 import multiprocessing as mp
@@ -42,6 +12,9 @@ import sys
 import mutagen
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3, EasyID3KeyError
+
+
+VERSION = '1.0'
 
 
 def match_file(path):
@@ -449,16 +422,19 @@ def main():
     arg = argparse.ArgumentParser(description='Convert between different '
                                   'audio file format.')
     arg.add_argument('-s', '--split', action='store_true',
-                     help='split output file with provided *.cue file')
+                     help='Split output file with provided *.cue file')
     arg.add_argument('-r', '--recursive', action='store_true',
-                     help='do the files searching recursive')
+                     help='Do the files searching recursive')
     arg.add_argument('-e', '--encoder', default='ogg', type=str,
-                     choices=('ogg', 'mp3'), help='encoder to use. Defaults '
+                     choices=('ogg', 'mp3'), help='Encoder to use. Defaults '
                      'to "ogg"')
     arg.add_argument('-q', '--quality', help='Quality of the encoded file. '
                      'Consult "lame" and "oggenc" for details. Defaults are '
                      '6 for lame and 8 for oggenc.')
-    arg.add_argument('files', nargs='+', help='files to encode')
+    arg.add_argument('-v', '--version', action='version',
+                     version='%(prog)s v' + VERSION,
+                     help='Display version and exit.')
+    arg.add_argument('files', nargs='+', help='File(s) to encode')
     args = arg.parse_args()
 
     if args.recursive:
