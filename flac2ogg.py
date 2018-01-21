@@ -61,7 +61,8 @@ def get_filepaths_recursively(pattern=None):
     if pattern and len(pattern) == 1 and pattern[0].startswith("*"):
         pat = "." + pattern[0]
     else:
-        print "Recursive option only works with simple pattern for files match"
+        print("Recursive option only works with simple pattern for files"
+              " match")
         sys.exit(1)
 
     files_ = []
@@ -295,7 +296,7 @@ class ApeType(FileType):
     """Ape filetype"""
 
     def extract_wav(self):
-        """Extract mpc file to wav"""
+        """Extract ape file to wav"""
         sp.check_call(["mac", self.filename, self.wav, "-d"])
 
 
@@ -396,11 +397,11 @@ class Converter(object):
                     base + ".wv.cue", base + ".ape.cue"):
             if os.path.exists(tmp):
                 cuefile = tmp
-                print "*** cuefile: %s" % cuefile
+                print("*** cuefile: %s" % cuefile)
                 break
 
         if cuefile is None:
-            print "*** No cuefile found for `%s'" % filename
+            print("*** No cuefile found for `%s'" % filename)
             return
 
         cue = CueObjectParser(cuefile)
@@ -409,7 +410,7 @@ class Converter(object):
         # list of wavs to encode
         klass = Converter.extract_map.get(ext.lower())
         if not klass:
-            print "*** Cannot find right converter for `%s'" % ext
+            print("*** Cannot find right converter for `%s'" % ext)
             return
 
         fobj = klass(filename, encoder)
