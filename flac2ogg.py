@@ -166,9 +166,9 @@ class Mp3Encoder(Encoder):
     """Mp3 encoder"""
     EXT = ".mp3"
 
-    def __init__(self, input_fname, output_fname, quality=None):
+    def __init__(self, quality=None):
         """Init"""
-        super(Mp3Encoder, self).__init__(input_fname, output_fname, quality)
+        super(Mp3Encoder, self).__init__(quality)
         if self.quality is None:
             self.quality = 6
 
