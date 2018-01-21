@@ -170,7 +170,6 @@ class FileType(object):
 
         self.album = None
         self.album_artist = None
-        self.album = None
         self.title = None
         self.performer = None
 
@@ -210,8 +209,7 @@ class FileType(object):
         else:
             tag = mutagen.File(self.filename)
 
-
-        if self.encoder == 'mp3':
+        if isinstance(self.encoder, Mp3Encoder):
             self._mp3_tag(tag)
             return
 
@@ -315,6 +313,7 @@ class Mp3Type(FileType):
     def extract_wav(self):
         """Extract mp3 file to wav"""
         sp.check_call(["lame", "--decode", self.filename, self.wav])
+
 
 class OggType(FileType):
     """Ogg Vorbis filetype"""
