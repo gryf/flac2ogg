@@ -31,11 +31,16 @@ def extract_wv(filename, wav):
     check_call(["wvunpack", filename, "-o", wav])
 
 
+def extract_wav(filename, wav):
+    """dummy extract method"""
+    return
+
+
 def extract_m4a(filename, wav):
     if "," in wav:
         wav = wav.replace(",", "\\,")
 
-    check_call(["mplayer", "-ao", "pcm", filename, "-ao",
+    check_call(["mplayer", "-vo", "none", filename, "-ao",
                 "pcm:file=%s" % wav])
 
 
@@ -47,6 +52,7 @@ def run(split, files=None):
         extract_map = {'.flac': extract_flac,
                        '.ape': extract_ape,
                        '.wv': extract_wv,
+                       '.wav': extract_wav,
                        '.m4a': extract_m4a}
 
         if ext.lower() not in extract_map:
