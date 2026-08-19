@@ -14,7 +14,7 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3, EasyID3KeyError
 
 
-VERSION = '1.0'
+VERSION = '1.1'
 
 
 def match_file(path):
@@ -315,6 +315,20 @@ class Mp3Type(FileType):
         sp.check_call(["lame", "--decode", self.filename, self.wav])
 
 
+class MusepackType(FileType):
+    """Musepack filetype"""
+
+    def __init__(self, filename, encoder):
+        super().__init__(filename, encoder)
+
+    def extract_wav(self):
+        """Extract m4a file to wav"""
+        wav = self.wav
+        if "," in wav:
+            wav = wav.replace(",", "\\,")
+        sp.check_call(["mpcdec", self.filename, self.wav])
+
+
 class OggType(FileType):
     """Ogg Vorbis filetype"""
 
@@ -329,6 +343,7 @@ class Converter(object):
                    '.flac': FlacType,
                    '.m4a': M4aType,
                    '.mp3': Mp3Type,
+                   '.mpc': MusepackType,
                    '.ogg': OggType,
                    '.wav': WavType,
                    '.wv': WvType}
