@@ -14,18 +14,15 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3, EasyID3KeyError
 
 
-VERSION = '1.1'
+VERSION = '1.2'
 
 
 def match_file(path):
     """Get all wav files from provided location"""
-    matched_files = []
     re_ = re.compile(r"^.*_\d+.wav$")
-
-    for filename in os.listdir(os.path.abspath(path)):
-        if re_.match(filename):
-            matched_files.append(os.path.join(path, filename))
-
+    matched_files = [os.path.join(path, filename)
+                     for filename in os.listdir(os.path.abspath(path))
+                     if re_.match(filename)]
     return sorted(matched_files)
 
 
@@ -52,14 +49,14 @@ def encode(obj):
     obj.encode()
 
 
-class CueTrack(object):
+class CueTrack:
     def __init__(self):
         """Init"""
         self.performer = None
         self.title = None
 
 
-class CueObjectParser(object):
+class CueObjectParser:
     def __init__(self, cuefile):
         """Init"""
         self.cuefile = cuefile
@@ -108,7 +105,7 @@ class CueObjectParser(object):
                     continue
 
 
-class Encoder(object):
+class Encoder:
     """Encoder base class"""
     EXT = ".undefined"
 
@@ -118,7 +115,7 @@ class Encoder(object):
 
     def encode(self, input_fname, output_fname):
         """Encode file"""
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class OggEncoder(Encoder):
@@ -127,7 +124,7 @@ class OggEncoder(Encoder):
 
     def __init__(self, quality=None):
         """Init"""
-        super(OggEncoder, self).__init__(quality)
+        super().__init__(quality)
         if self.quality is None:
             self.quality = 8
 
@@ -142,7 +139,7 @@ class Mp3Encoder(Encoder):
 
     def __init__(self, quality=None):
         """Init"""
-        super(Mp3Encoder, self).__init__(quality)
+        super().__init__(quality)
         if self.quality is None:
             self.quality = 6
 
@@ -151,7 +148,7 @@ class Mp3Encoder(Encoder):
                        output_fname])
 
 
-class FileType(object):
+class FileType:
     """Base class for file objects"""
     extensions = {'ogg': '.ogg',
                   'mp3': '.mp3'}
@@ -175,7 +172,7 @@ class FileType(object):
 
     def extract_wav(self):
         """Dummy function for wav files"""
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def encode(self):
         """Encode and tag file"""
@@ -283,7 +280,7 @@ class M4aType(FileType):
     """M4a filetype"""
 
     def __init__(self, filename, encoder):
-        super(M4aType, self).__init__(filename, encoder)
+        super().__init__(filename, encoder)
 
     def extract_wav(self):
         """Extract m4a file to wav"""
@@ -298,7 +295,7 @@ class WavType(FileType):
     """Uncompressed wav filetype"""
 
     def __init__(self, filename, encoder):
-        super(WavType, self).__init__(filename, encoder)
+        super().__init__(filename, encoder)
         self.wav = filename
         self.tmp_wav_remove = False
 
@@ -337,7 +334,7 @@ class OggType(FileType):
         sp.check_call(["oggdec", self.filename])
 
 
-class Converter(object):
+class Converter:
     """Main class for converting files"""
     extract_map = {'.ape': ApeType,
                    '.flac': FlacType,
