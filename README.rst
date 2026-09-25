@@ -18,6 +18,7 @@ Requirements
 - python 3
 - `mutagen`_ python library for tag read/write
 - `vorbis tools`_ for ``ogg`` files encode/decode
+- `opus tools`_ for ``opus`` files encode/decode
 - `lame`_ for ``mp3`` files encode/decode
 - `flac`_ for ``flac`` files decode
 - `mac`_ for ``Monkey audio codecs``/``ape`` files decode
@@ -37,16 +38,19 @@ Conversion can be performed from the following formats:
 - WavePack
 - Ape
 - Ogg Vorbis
+- Ogg Opus
 
 Currently supported encoders:
 
 - Ogg Vorbis
+- Ogg Opus
 - MP3 (lame)
 
-There is an option to set the quality for the encoders - for *Ogg* files there
-would be used an ``-q`` option for ``oggenc`` command, and for the *mp3*
-format, ``-V`` option would be used for ``lame`` command. Consult corresponding
-man pages for details.
+There is an option to set the quality for the encoders - for *Vorbis* files
+there would be used an ``-q`` option for ``oggenc`` command, for the *mp3*
+format ``-V`` option would be used for ``lame`` command and ``--bitrate`` for
+``opusenc`` for the *Opus* files. Consult corresponding encoder man pages for
+details.
 
 Usage
 =====
@@ -57,7 +61,7 @@ Given that there are couple of music files, simplest usage is as follows:
 
    $ flac2ogg.py directory_of_music_files/*
 
-All files from that directory will be encoded to *ogg* by defaults. If there
+All files from that directory will be encoded to *ogg* by default. If there
 are already some *ogg* files, new files would have ``_encoded_`` added into the
 filename. Note, that output files will be placed next to the original files.
 
@@ -69,6 +73,7 @@ This work is licensed on 3-clause BSD license. See LICENSE file for details.
 
 .. _mutagen: https://mutagen.readthedocs.io/en/latest/
 .. _vorbis tools: http://www.vorbis.com/
+.. _opus tools: https://opus-codec.org
 .. _flac: http://www.vorbis.com/
 .. _lame: http://lame.sourceforge.net/
 .. _mac: http://www.deb-multimedia.org/dists/testing/main/binary-amd64/package/monkeys-audio.php

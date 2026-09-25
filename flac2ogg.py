@@ -147,6 +147,21 @@ class Mp3Encoder(Encoder):
         sp.check_call(["lame", f"-V{self.quality}", input_fname, output_fname])
 
 
+class OpusEncoder(Encoder):
+    """Opus encoder"""
+    EXT = ".opus"
+
+    def __init__(self, quality=None):
+        """Init"""
+        super().__init__(quality)
+        if self.quality is None:
+            self.quality = 128
+
+    def encode(self, input_fname, output_fname):
+        sp.check_call(["opusenc", "--bitrate", self.quality, input_fname,
+                       output_fname])
+
+
 class FileType:
     """Base class for file objects"""
     extensions = {'ogg': '.ogg',
@@ -333,6 +348,14 @@ class OggType(FileType):
         sp.check_call(["oggdec", self.filename])
 
 
+class OpusType(FileType):
+    """Opus filetype"""
+
+    def extract_wav(self):
+        """Extract opus file to wav"""
+        sp.check_call(["opusdec", self.filename])
+
+
 class Converter:
     """Main class for converting files"""
     extract_map = {'.ape': ApeType,
@@ -341,6 +364,7 @@ class Converter:
                    '.mp3': Mp3Type,
                    '.mpc': MusepackType,
                    '.ogg': OggType,
+                   '.opus': OpusType,
                    '.wav': WavType,
                    '.wv': WvType}
 
@@ -424,7 +448,8 @@ class Converter:
 
 
 ENCODERS = {'ogg': OggEncoder,
-            'mp3': Mp3Encoder}
+            'mp3': Mp3Encoder,
+            'opus': OpusEncoder}
 
 
 def main():
@@ -436,11 +461,12 @@ def main():
     arg.add_argument('-r', '--recursive', action='store_true',
                      help='Do the files searching recursive')
     arg.add_argument('-e', '--encoder', default='ogg', type=str,
-                     choices=('ogg', 'mp3'), help='Encoder to use. Defaults '
-                     'to "ogg"')
+                     choices=('ogg', 'mp3', 'opus'),
+                     help='Encoder to use. Defaults to "ogg"')
     arg.add_argument('-q', '--quality', help='Quality of the encoded file. '
-                     'Consult "lame" and "oggenc" for details. Defaults are '
-                     '6 for lame and 8 for oggenc.')
+                     'Consult "lame", "oggenc" and "opusenc" manuals for '
+                     'details. Defaults are -V6 for lame, -q8 for oggenc and '
+                     '--bitrate 128 for opusenc')
     arg.add_argument('-v', '--version', action='version',
                      version='%(prog)s v' + VERSION,
                      help='Display version and exit.')
