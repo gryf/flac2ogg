@@ -14,7 +14,7 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3, EasyID3KeyError
 
 
-VERSION = '1.2'
+VERSION = '1.3'
 
 
 def match_file(path):
@@ -460,9 +460,9 @@ def main():
                      help='Split output file with provided *.cue file')
     arg.add_argument('-r', '--recursive', action='store_true',
                      help='Do the files searching recursive')
-    arg.add_argument('-e', '--encoder', default='ogg', type=str,
+    arg.add_argument('-e', '--encoder', default='opus', type=str,
                      choices=('ogg', 'mp3', 'opus'),
-                     help='Encoder to use. Defaults to "ogg"')
+                     help='Encoder to use. Defaults to "opus"')
     arg.add_argument('-q', '--quality', help='Quality of the encoded file. '
                      'Consult "lame", "oggenc" and "opusenc" manuals for '
                      'details. Defaults are -V6 for lame, -q8 for oggenc and '

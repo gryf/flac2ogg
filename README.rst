@@ -61,9 +61,10 @@ Given that there are couple of music files, simplest usage is as follows:
 
    $ flac2ogg.py directory_of_music_files/*
 
-All files from that directory will be encoded to *ogg* by default. If there
-are already some *ogg* files, new files would have ``_encoded_`` added into the
-filename. Note, that output files will be placed next to the original files.
+All files from that directory will be encoded to *opus* by default. If there
+are already some *opus* files, new files would have ``_encoded_`` added into
+the filename. Note, that output files will be placed next to the original
+files.
 
 License
 =======
