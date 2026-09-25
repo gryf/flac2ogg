@@ -15,7 +15,7 @@ conversion between different type of audio formats.
 Requirements
 ============
 
-- python in version 2.7 or 3
+- python 3
 - `mutagen`_ python library for tag read/write
 - `vorbis tools`_ for ``ogg`` files encode/decode
 - `lame`_ for ``mp3`` files encode/decode

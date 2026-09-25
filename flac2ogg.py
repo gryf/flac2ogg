@@ -129,8 +129,8 @@ class OggEncoder(Encoder):
             self.quality = 8
 
     def encode(self, input_fname, output_fname):
-        sp.check_call(["oggenc", "-q%s" % self.quality, input_fname,
-                       '-o', output_fname])
+        sp.check_call(["oggenc", f"-q{self.quality}", input_fname, '-o',
+                       output_fname])
 
 
 class Mp3Encoder(Encoder):
@@ -144,8 +144,7 @@ class Mp3Encoder(Encoder):
             self.quality = 6
 
     def encode(self, input_fname, output_fname):
-        sp.check_call(["lame", "-V%s" % self.quality, input_fname,
-                       output_fname])
+        sp.check_call(["lame", f"-V{self.quality}", input_fname, output_fname])
 
 
 class FileType:
@@ -288,7 +287,7 @@ class M4aType(FileType):
         if "," in wav:
             wav = wav.replace(",", "\\,")
         sp.check_call(["mplayer", "-vo", "none", self.filename, "-ao",
-                       "pcm:file=%s" % wav])
+                       f"pcm:file={wav}"])
 
 
 class WavType(FileType):
@@ -330,7 +329,7 @@ class OggType(FileType):
     """Ogg Vorbis filetype"""
 
     def extract_wav(self):
-        """Extract mp3 file to wav"""
+        """Extract ogg vorbis file to wav"""
         sp.check_call(["oggdec", self.filename])
 
 
@@ -381,11 +380,11 @@ class Converter:
                     base + ".wv.cue", base + ".ape.cue"):
             if os.path.exists(tmp):
                 cuefile = tmp
-                print("*** cuefile: %s" % cuefile)
+                print(f"*** cuefile: {cuefile}")
                 break
 
         if cuefile is None:
-            print("*** No cuefile found for `%s'" % filename)
+            print(f"*** No cuefile found for `{filename}'")
             return
 
         cue = CueObjectParser(cuefile)
@@ -394,7 +393,7 @@ class Converter:
         # list of wavs to encode
         klass = Converter.extract_map.get(ext.lower())
         if not klass:
-            print("*** Cannot find right converter for `%s'" % ext)
+            print(f"*** Cannot find right converter for `{ext}'")
             return
 
         fobj = klass(filename, encoder)
